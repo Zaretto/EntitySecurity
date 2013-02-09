@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{333020F7-8357-4C6C-BDE5-23DC7B4BAD5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferenceMonitor", "ReferenceMonitor\ReferenceMonitor.csproj", "{BC98ADE8-D101-4396-8290-A83657B0BE47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaretto.Security", "ReferenceMonitor\Zaretto.Security.csproj", "{BC98ADE8-D101-4396-8290-A83657B0BE47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
