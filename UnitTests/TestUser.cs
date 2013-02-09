@@ -6,18 +6,13 @@ using Zaretto.Security;
 
 namespace ReferenceMonitorTests
 {
-    class TestUser : IUser
+    class TestUser 
     {
-        public TestUser(int id)
+        public TestUser(Guid id)
         {
             this.Id = id;
         }
         
-        public int GetId()
-        {
-            return Id;
-        }
-
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

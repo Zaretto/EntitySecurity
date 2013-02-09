@@ -8,7 +8,7 @@ namespace ReferenceMonitorTests
 {
     class TestItem : IControlledObject
     {
-        public TestItem(User User, IGroup Group, Protection Protection)
+        public TestItem(User User, TestGroup  Group, Protection Protection)
         {
             this.owner = User;
             this.group = Group;
@@ -16,25 +16,37 @@ namespace ReferenceMonitorTests
         }
 
         public User owner { get; set; }
-
+        public TestGroup group { get; set; }
         public Protection protection { get; set; }
 
-        public IGroup group { get; set; }
-
-        public Zaretto.Security.IGroup GetGroup()
+        public Zaretto.Security.Protection Protection
         {
-            return group;
+            get { return protection; }
         }
 
-        public Zaretto.Security.IUser GetOwner()
+        public Guid UserId
         {
-            return owner;
+            get
+            {
+                return owner.Id;
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public Zaretto.Security.Protection GetProtection()
-        {
-            return protection;
-        }
 
+        public Guid GroupId
+        {
+            get
+            {
+                return group.Id;
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

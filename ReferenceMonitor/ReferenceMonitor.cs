@@ -63,57 +63,35 @@ using System.Text;
 
 namespace Zaretto.Security
 {
-    public enum Action
+    public enum Operation
     {
-        Read,
-        Write,
-        Update,
-        Delete,
-        Create,
-        List,
-        Security
-    };
-
-    public interface IUser
-    {
-        int GetId();
-    };
-
-    public interface IGroup 
-    {
-        int GetId();
+        Read      = 1 << 1,
+        Write     = 1 << 2,
+        Update    = 1 << 3,
+        Delete    = 1 << 4,
+        Create    = 1 << 5,
+        List      = 1 << 6,
+        Security  = 1 << 7,
     };
 
     public enum Privilege
     {
-        BYPASS,      // Bypass object protection,                      All
-        DIAGNOSE,    // Diagnose objects,                              Objects
-        EXQUOTA,     // May exceed quotas,                             Devour
-        GROUP,       // Access via group protection when not in group, Group
-        IMPERSONATE, // Become another subject/user,                   All
-        IMPORT,      // Perform import operations,                     Objects
-        OPER,        // Act as system operator,                        System
-        READALL,     // Read any object bypassing,                     Objects
-        SECURITY,    // Perform Security Operations,                   System
-        SETPRV,      // Change own privilege levels,                   All
-        SYSPRV,      // Access objects via system protection,          All
+        BYPASS      = 1 << 1,    // Bypass object protection,                      All
+        DIAGNOSE    = 1 << 2,    // Diagnose objects                               Objects
+        EXQUOTA     = 1 << 3,    // May exceed quotas=                             Devour
+        GROUP       = 1 << 4,    // Access via group protection when not in group = 0x0000, Group
+        IMPERSONATE = 1 << 5,    // Become another subject/user,                   All
+        IMPORT      = 1 << 6,    // Perform import operations,                     Objects
+        OPER        = 1 << 7,    // Act as system operator,                        System
+        READALL     = 1 << 8,    // Read any object bypassing,                     Objects
+        SECURITY    = 1 << 9,    // Perform Security Operations,                   System
+        SETPRV      = 1 << 10,   // Change own privilege levels,                   All
+        SYSPRV      = 1 << 11,   // Access objects via system protection,          All
 
     };
 
     public interface ISubject
     {
-        /// <summary>
-        /// Returns the Id of this subject
-        /// </summary>
-        /// <returns></returns>
-        int GetId();
- 
-        /// <summary>
-        /// Returns the group of this subject
-        /// </summary>
-        /// <returns>IGroup</returns>
-        IGroup GetGroup();
-
         /**
          * Returns an array of privileges assigned to this subject
          * @access public
@@ -132,7 +110,7 @@ namespace Zaretto.Security
          *   SETPRV,      Change own privilege levels,                   All
          *   SYSPRV,      Access objects via system protection,          All
          */
-        IEnumerable<Privilege> GetPrivileges();
+        bool HasPrivilege(Privilege p);
 
         /// <summary>
         /// returns true if the owner of the controlled object is equivalent to this
@@ -141,29 +119,26 @@ namespace Zaretto.Security
         /// <param name="obj"></param>
         /// <returns></returns>
         bool IsOwnerEquivalent(IControlledObject obj);
+
+        /// <summary>
+        /// returns true if the owner of the controlled object is equivalent to this
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        bool IsGroupEquivalent(IControlledObject obj);
     };
 
-    public interface IControlledObject
+    public interface IControlledObject 
     {
-        /**
-         * Returns the group of this subject
-         * @access public
-         * @return Int
-         */
-        IGroup GetGroup();
-        /**
-         * Returns the owner of this object; a User object
-         * @access public
-         * @return Int
-         */
-        IUser GetOwner();
-
         /**
          * Returns the protection of this object; a Protection object
          * @access public
          * @return Int
          */
-        Protection GetProtection();
+        Protection Protection {get;}
+
+        Guid UserId { get; set; }
+        Guid GroupId { get; set; }
     };
 
     public class Permission
@@ -210,10 +185,10 @@ namespace Zaretto.Security
         /// <param name="combined"></param>
         public Permission(byte combined)
         {
-            Read = (combined & 0x1) == 0x1;
-            Write = (combined & 0x2) == 0x2;
-            Execute = (combined & 0x4) == 0x4;
-            Delete = (combined & 0x8) == 0x8;
+            Read = (combined & B_Read) == B_Read;
+            Write = (combined & B_Write) == B_Write;
+            Execute = (combined & B_Execute) == B_Execute;
+            Delete = (combined & B_Delete) == B_Delete;
         }
         public Permission(Permission from)
         {
@@ -224,10 +199,10 @@ namespace Zaretto.Security
         }
         public Permission(int combined)
         {
-            Read = (combined & 0x1) == 0x1;
-            Write = (combined & 0x2) == 0x2;
-            Execute = (combined & 0x4) == 0x4;
-            Delete = (combined & 0x8) == 0x8;
+            Read = (combined & B_Read) == B_Read;
+            Write = (combined & B_Write) == B_Write;
+            Execute = (combined & B_Execute) == B_Execute;
+            Delete = (combined & B_Delete) == B_Delete;
         }
 
         internal byte Combined;
@@ -453,22 +428,28 @@ namespace Zaretto.Security
 
     public class ReferenceMonitor
     {
-        public static bool permitted(Action action, Permission permission)
+        /// <summary>
+        /// Given an operation get the relevant permission - mapping from operations to permissions
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="permission"></param>
+        /// <returns></returns>
+        private static bool permitted(Operation operation, Permission permission)
         {
-            switch (action)
+            switch (operation)
             {
-                case Action.Update:
-                case Action.Write:
-                case Action.Create:
+                case Operation.Update:
+                case Operation.Write:
+                case Operation.Create:
                     return permission.Write;
 
-                case Action.Read:
+                case Operation.Read:
                     return permission.Read;
 
-                case Action.Delete:
+                case Operation.Delete:
                     return permission.Delete;
 
-                case Action.List:
+                case Operation.List:
                     // only items that have execute and read can be listed. this allows fine
                     // grained control of items appearing in lists - i.e. to remove an item from a list do not grant execute - just read.
                     return permission.Execute && permission.Read;
@@ -476,27 +457,23 @@ namespace Zaretto.Security
             return false;
         }
 
-        public static bool hasPriv(ISubject subject, Privilege PrivilegeName)
+        public static bool IsPermitted(Operation operation, ISubject subject, IControlledObject obj, bool accessViaSystem = false)
         {
-            return subject.GetPrivileges().Contains(PrivilegeName);
-        }
-
-        public static bool IsPermitted(Action action, ISubject subject, IControlledObject obj, bool accessViaSystem = false)
-        {
-            var subjectGroups = subject.GetGroup();
             //
             // if the object is null then it appears safe to grant access.
             if (obj == null)
                 return true;
 
-            var protection = obj.GetProtection();
+            var protection = obj.Protection;
 
             //
             // least costly - so try this first.
-            if (ReferenceMonitor.permitted(action, protection.world))
+            if (ReferenceMonitor.permitted(operation, protection.world))
                 return true;
 
-            if (subject.IsOwnerEquivalent(obj) && ReferenceMonitor.permitted(action, protection.owner))
+            //
+            // access via owner
+            if (subject.IsOwnerEquivalent(obj) && ReferenceMonitor.permitted(operation, protection.owner))
             {
                 return true;
             }
@@ -505,36 +482,36 @@ namespace Zaretto.Security
             // if system user - or have System Privilege then can access through the system protection.
             // accessViaSystem allows services to access via system protection and is part of the privilege elevation
             // and impersonation.
-            if ((accessViaSystem || ReferenceMonitor.hasPriv(subject, Privilege.SYSPRV)) && ReferenceMonitor.permitted(action, protection.system))
+            if ((accessViaSystem || subject.HasPrivilege(Privilege.SYSPRV)) && ReferenceMonitor.permitted(operation, protection.system))
             {
                 return true;
             }
 
             //
             // only the owner or a subject with SECURITY priv can change permissions and protections.
-            if (action == Action.Security)
-                return subject.GetId() == obj.GetOwner().GetId() || ReferenceMonitor.hasPriv(subject, Privilege.SECURITY);
+            if (operation == Operation.Security)
+                return subject.IsOwnerEquivalent(obj) || subject.HasPrivilege(Privilege.SECURITY);
 
             /*
              * if the subject has group access (priv) or the group is the same 
              * between the subj and obj then grant access based on the group protection.
              */
-            if ((subject.GetGroup() == obj.GetGroup() || ReferenceMonitor.hasPriv(subject, Privilege.GROUP))
-                && ReferenceMonitor.permitted(action, protection.group))
+            if ((subject.IsGroupEquivalent(obj) || subject.HasPrivilege(Privilege.GROUP))
+                && ReferenceMonitor.permitted(operation, protection.group))
                 return true;
 
             /*
              * If the subject (user) has BYPASS then it allows access to everything in an uncontrolled (i.e. unix root)
              * type of manner, so just allow.
              */
-            if (ReferenceMonitor.hasPriv(subject, Privilege.BYPASS))
+            if (subject.HasPrivilege(Privilege.BYPASS))
                 return true;
 
             /*
              * If the subject (user) has READALL then permit any read or list
              */
-            if ((action == Action.Read || action == Action.List)
-                && ReferenceMonitor.hasPriv(subject, Privilege.READALL))
+            if ((operation == Operation.Read || operation == Operation.List)
+                && subject.HasPrivilege(Privilege.READALL))
             {
                 return true;
             }

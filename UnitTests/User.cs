@@ -6,28 +6,19 @@ using Zaretto.Security;
 
 namespace ReferenceMonitorTests
 {
-    class User : ISubject, IUser
+    class User : ISubject
     {
         private TestGroup group;
         private TestUser user;
 
-        public User(int p1, int p2)
+        public User(Guid p1, Guid p2)
         {
             user = new TestUser(p1);
             group = new TestGroup(p2);
             Privileges = new List<Privilege>();
         }
 
-        public int GetId()
-        {
-            return user.Id;
-        }
-
-        public IGroup GetGroup()
-        {
-            return group;
-        }
-
+        public Guid Id { get { return user.Id; } }
         public IEnumerable<Privilege> GetPrivileges()
         {
             return Privileges;
@@ -35,9 +26,20 @@ namespace ReferenceMonitorTests
 
         public bool IsOwnerEquivalent(IControlledObject obj)
         {
-            return obj.GetOwner().GetId() == user.Id;
+            return obj.UserId == user.Id;
         }
 
         public List<Privilege> Privileges { get; set; }
+
+
+        public bool IsGroupEquivalent(IControlledObject obj)
+        {
+            return obj.GroupId == group.Id;
+        }
+
+        public bool HasPrivilege(Privilege p)
+        {
+            return Privileges.Contains(p);
+        }
     }
 }
