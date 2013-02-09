@@ -112,6 +112,9 @@ namespace Zaretto.Security
          */
         bool HasPrivilege(Privilege p);
 
+        void AddPrivilege(Privilege p);
+        void RemovePrivilege(Privilege p);
+
         /// <summary>
         /// returns true if the owner of the controlled object is equivalent to this
         /// (e.g. obj.GetId() == Id)

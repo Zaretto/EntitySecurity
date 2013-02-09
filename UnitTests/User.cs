@@ -8,29 +8,38 @@ namespace ReferenceMonitorTests
 {
     class User : ISubject
     {
+        int PrivilegeMask = 0;
+        //private List<Privilege> Privileges { get; set; }
+
         private TestGroup group;
         private TestUser user;
+
+        public Guid Id { get { return user.Id; } }
 
         public User(Guid p1, Guid p2)
         {
             user = new TestUser(p1);
             group = new TestGroup(p2);
-            Privileges = new List<Privilege>();
-        }
-
-        public Guid Id { get { return user.Id; } }
-        public IEnumerable<Privilege> GetPrivileges()
-        {
-            return Privileges;
+            PrivilegeMask = 0;
+//            Privileges = new List<Privilege>();
         }
 
         public bool IsOwnerEquivalent(IControlledObject obj)
         {
             return obj.UserId == user.Id;
         }
+        
+        public void AddPrivilege(Privilege p)
+        {
+            PrivilegeMask |= (int)p;
+            //Privileges.Add(p);
+        }
 
-        public List<Privilege> Privileges { get; set; }
-
+        public void RemovePrivilege(Privilege p)
+        {
+            PrivilegeMask &= ~(int)p;
+//            Privileges.Remove(p);
+        }
 
         public bool IsGroupEquivalent(IControlledObject obj)
         {
@@ -39,7 +48,7 @@ namespace ReferenceMonitorTests
 
         public bool HasPrivilege(Privilege p)
         {
-            return Privileges.Contains(p);
+            return (PrivilegeMask & (int)p) == (int)p;
         }
     }
 }
