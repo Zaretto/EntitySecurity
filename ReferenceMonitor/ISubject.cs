@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Zaretto.Security
+﻿namespace Zaretto.Security
 {
     public interface ISubject
     {
@@ -24,9 +20,11 @@ namespace Zaretto.Security
          *   SETPRV,      Change own privilege levels,                   All
          *   SYSPRV,      Access objects via system protection,          All
          */
+
         bool HasPrivilege(Privilege p);
 
         void AddPrivilege(Privilege p);
+
         void RemovePrivilege(Privilege p);
 
         /// <summary>

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Zaretto.Security;
-using System.Collections.Specialized;
 
 namespace ReferenceMonitorTests
 {
@@ -39,6 +35,7 @@ namespace ReferenceMonitorTests
         }
 
         #region Additional test attributes
+
         //
         // You can use the following additional attributes as you write your tests:
         //
@@ -50,7 +47,7 @@ namespace ReferenceMonitorTests
         // [ClassCleanup()]
         // public static void MyClassCleanup() { }
         //
-        // Use TestInitialize to run code before running each test 
+        // Use TestInitialize to run code before running each test
         // [TestInitialize()]
         // public void MyTestInitialize() { }
         //
@@ -58,7 +55,8 @@ namespace ReferenceMonitorTests
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
-        #endregion
+
+        #endregion Additional test attributes
 
         /// <summary>
         /// tests the all the permutations of a permission
@@ -174,8 +172,8 @@ namespace ReferenceMonitorTests
             Assert.IsFalse(p1.Read);
             Assert.IsFalse(p1.Write);
             Assert.IsFalse(p1.Execute);
-            Assert.IsTrue(p1.Delete); 
-            
+            Assert.IsTrue(p1.Delete);
+
             p1.Delete = false;
             Assert.IsFalse(p1.Read);
             Assert.IsFalse(p1.Write);
@@ -203,7 +201,7 @@ namespace ReferenceMonitorTests
             Assert.IsTrue(p1.Execute);
             Assert.IsTrue(p1.Delete);
         }
-        
+
         /// <summary>
         /// tests the basic permutations of protection
         /// </summary>
@@ -216,7 +214,7 @@ namespace ReferenceMonitorTests
             g = new Permission(true, true, true, true);
             w = new Permission(true, true, true, true);
 
-            Protection protection ;
+            Protection protection;
             protection = new Protection(s, o, g, w);
 
             Assert.IsTrue(protection.system.Read);
@@ -236,7 +234,6 @@ namespace ReferenceMonitorTests
             Assert.IsTrue(protection.world.Execute);
             Assert.IsTrue(protection.world.Delete);
 
-            
             protection.system.Read = true;
             protection.system.Write = false;
             protection.system.Execute = false;
@@ -776,7 +773,6 @@ namespace ReferenceMonitorTests
             Assert.IsTrue(protection.world.Write);
             Assert.IsTrue(protection.world.Execute);
             Assert.IsTrue(protection.world.Delete);
-
         }
     }
 }

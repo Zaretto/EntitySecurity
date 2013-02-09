@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using Zaretto.Security;
 
 namespace ReferenceMonitorTests
@@ -7,10 +7,10 @@ namespace ReferenceMonitorTests
     [TestClass]
     public class ReferenceMonitorTests
     {
-        Guid Id1 = Guid.NewGuid();
-        Guid Id2 = Guid.NewGuid();
-        Guid GroupId1 = Guid.NewGuid();
-        Guid GroupId2 = Guid.NewGuid();
+        private Guid Id1 = Guid.NewGuid();
+        private Guid Id2 = Guid.NewGuid();
+        private Guid GroupId1 = Guid.NewGuid();
+        private Guid GroupId2 = Guid.NewGuid();
 
         [TestMethod]
         public void TestReferenceMonitor()
@@ -46,8 +46,8 @@ namespace ReferenceMonitorTests
 
             User1.AddPrivilege(Privilege.BYPASS);
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o2));
-
         }
+
         [TestMethod]
         public void OwnerProtection()
         {
@@ -76,8 +76,8 @@ namespace ReferenceMonitorTests
 
             User1.AddPrivilege(Privilege.BYPASS);
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o2));
-
         }
+
         [TestMethod]
         public void Privileges()
         {

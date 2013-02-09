@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Zaretto.Security;
 
 namespace ReferenceMonitorTests
 {
-    class TestItem : IControlledObject
+    internal class TestItem : IControlledObject
     {
-        public TestItem(User User, TestGroup  Group, Protection Protection)
+        public TestItem(User User, TestGroup Group, Protection Protection)
         {
             this.owner = User;
             this.group = Group;
@@ -16,7 +13,9 @@ namespace ReferenceMonitorTests
         }
 
         public User owner { get; set; }
+
         public TestGroup group { get; set; }
+
         public Protection protection { get; set; }
 
         public Zaretto.Security.Protection Protection
@@ -35,7 +34,6 @@ namespace ReferenceMonitorTests
                 throw new NotImplementedException();
             }
         }
-
 
         public Guid GroupId
         {

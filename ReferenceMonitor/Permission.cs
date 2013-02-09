@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Zaretto.Security
+﻿namespace Zaretto.Security
 {
     public class Permission
     {
@@ -26,6 +22,7 @@ namespace Zaretto.Security
          * Construct either using a combined (byte format encoding bits as RWED eg. 5=R E)
          * or by specifying as individual values;
          */
+
         public Permission(bool read, bool write, bool execute, bool delete)
         {
             Combined = 0;
@@ -34,9 +31,10 @@ namespace Zaretto.Security
             Execute = execute;
             Delete = delete;
         }
+
         /// <summary>
         /// construct from a combined permission.
-        /// 0: Read 
+        /// 0: Read
         /// 2: Write
         /// 4: Execute
         /// 8: Delete
@@ -49,6 +47,7 @@ namespace Zaretto.Security
             Execute = (combined & B_Execute) == B_Execute;
             Delete = (combined & B_Delete) == B_Delete;
         }
+
         public Permission(Permission from)
         {
             Read = from.Read;
@@ -56,6 +55,7 @@ namespace Zaretto.Security
             Execute = from.Execute;
             Delete = from.Delete;
         }
+
         public Permission(int combined)
         {
             Read = (combined & B_Read) == B_Read;
@@ -80,6 +80,7 @@ namespace Zaretto.Security
                     Combined &= (byte)(~B_Read & 0xff);
             }
         }
+
         public bool Write
         {
             get
@@ -94,6 +95,7 @@ namespace Zaretto.Security
                     Combined &= (byte)(~B_Write & 0xff);
             }
         }
+
         public bool Execute
         {
             get
@@ -108,6 +110,7 @@ namespace Zaretto.Security
                     Combined &= (byte)(~B_Execute & 0xff);
             }
         }
+
         public bool Delete
         {
             get
@@ -123,7 +126,7 @@ namespace Zaretto.Security
             }
         }
 
-        static string add_permission_to_string(bool value, string if_set)
+        private static string add_permission_to_string(bool value, string if_set)
         {
             if (value)
                 return if_set;
@@ -131,13 +134,12 @@ namespace Zaretto.Security
                 return "";
         }
 
-        string __toString()
+        private string __toString()
         {
             return add_permission_to_string(Read, "R")
                 + add_permission_to_string(Write, "W")
                 + add_permission_to_string(Execute, "E")
                 + add_permission_to_string(Delete, "D");
         }
-
     }
 }

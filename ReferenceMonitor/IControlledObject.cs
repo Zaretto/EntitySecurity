@@ -9,10 +9,11 @@ namespace Zaretto.Security
          * @access public
          * @return Int
          */
+
         Protection Protection { get; }
 
         Guid UserId { get; set; }
+
         Guid GroupId { get; set; }
     };
-
 }

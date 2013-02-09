@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Zaretto.Security
+﻿namespace Zaretto.Security
 {
     public class Protection
     {
@@ -12,6 +8,7 @@ namespace Zaretto.Security
          * Construct either using a combined (4 char format SOGW eg. 7751 =S:RWED, O:RWED, G:R E, O:R   )
          * or by specifying as individual values;
          */
+
         public Protection(Permission system, Permission owner, Permission group, Permission world)
         {
             this.system = new Permission(system);
@@ -19,6 +16,7 @@ namespace Zaretto.Security
             this.group = new Permission(group);
             this.world = new Permission(world);
         }
+
         /// <summary>
         /// construct using 4 bit masks, e.g. Permission.REWD
         /// /// </summary>
@@ -48,8 +46,11 @@ namespace Zaretto.Security
         }
 
         public Permission system { get; set; }
+
         public Permission owner { get; set; }
+
         public Permission group { get; set; }
+
         public Permission world { get; set; }
 
         public int Combined
@@ -66,6 +67,7 @@ namespace Zaretto.Security
                 system = new Permission((value & 0xF000) >> 12);
             }
         }
+
         //private Permission _system = new Permission(0);
         //private Permission _owner = new Permission(0);
         //private Permission _group = new Permission(0);

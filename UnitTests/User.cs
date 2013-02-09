@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Zaretto.Security;
 
 namespace ReferenceMonitorTests
 {
-    class User : ISubject
+    internal class User : ISubject
     {
-        int PrivilegeMask = 0;
+        private int PrivilegeMask = 0;
+
         //private List<Privilege> Privileges { get; set; }
 
         private TestGroup group;
@@ -21,24 +19,27 @@ namespace ReferenceMonitorTests
             user = new TestUser(p1);
             group = new TestGroup(p2);
             PrivilegeMask = 0;
-//            Privileges = new List<Privilege>();
+
+            //            Privileges = new List<Privilege>();
         }
 
         public bool IsOwnerEquivalent(IControlledObject obj)
         {
             return obj.UserId == user.Id;
         }
-        
+
         public void AddPrivilege(Privilege p)
         {
             PrivilegeMask |= (int)p;
+
             //Privileges.Add(p);
         }
 
         public void RemovePrivilege(Privilege p)
         {
             PrivilegeMask &= ~(int)p;
-//            Privileges.Remove(p);
+
+            //            Privileges.Remove(p);
         }
 
         public bool IsGroupEquivalent(IControlledObject obj)

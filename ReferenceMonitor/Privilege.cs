@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Zaretto.Security
+﻿namespace Zaretto.Security
 {
     public enum Privilege
     {
@@ -17,6 +13,5 @@ namespace Zaretto.Security
         SECURITY = 1 << 9,    // Perform Security Operations,                   System
         SETPRV = 1 << 10,   // Change own privilege levels,                   All
         SYSPRV = 1 << 11,   // Access objects via system protection,          All
-
     };
 }
