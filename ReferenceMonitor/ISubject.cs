@@ -1,7 +1,11 @@
 ﻿namespace Zaretto.Security
 {
+    using UserIdType = System.Guid;
+    using GroupIdType = System.Guid;
+
     public interface ISubject
     {
+
         /**
          * Returns an array of privileges assigned to this subject
          * @access public
