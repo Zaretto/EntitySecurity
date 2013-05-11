@@ -53,7 +53,7 @@ namespace Zaretto.Security
         {
             //
             // if the object is null then it appears safe to grant access.
-            if (obj == null)
+            if (obj == null || subject == null)
                 return true;
 
             var protection = obj.Protection;
@@ -121,7 +121,6 @@ namespace Zaretto.Security
         {
             switch (operation)
             {
-                case Operation.Update:
                 case Operation.Write:
                 case Operation.Create:
                     return permission.Write;
@@ -139,6 +138,22 @@ namespace Zaretto.Security
                     return permission.Execute && permission.Read;
             }
             return false;
+        }
+
+        /// <summary>
+        /// throw exception if access not permitted. do  not check null objects.
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="currentUser"></param>
+        /// <param name="obj"></param>
+        /// <param name="accessViaSystem"></param>
+        public static void ThrowIfNotPermitted(Operation operation, ISubject currentUser, IControlledObject obj, bool accessViaSystem = false)
+        {
+            if (!IsPermitted(operation, currentUser, obj, accessViaSystem))
+            {
+                IsPermitted(operation, currentUser, obj, accessViaSystem);
+                throw new Zaretto.System.SystemStatusNoPriv(obj, operation, currentUser);
+            }
         }
     }
 }

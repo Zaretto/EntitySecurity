@@ -46,5 +46,23 @@ namespace ReferenceMonitorTests
                 throw new NotImplementedException();
             }
         }
+
+
+
+
+        public string SimpleId
+        {
+            get {
+            return "SimplieId";
+            }
+        }
+
+        public string OwnerDescription
+        {
+            get
+            {
+                return owner.Id.ToString();
+            }
+        }
     }
 }

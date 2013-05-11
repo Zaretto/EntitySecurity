@@ -134,7 +134,15 @@
                 return "";
         }
 
-        private string __toString()
+        public string __toString()
+        {
+            return add_permission_to_string(Read, "R")
+                + add_permission_to_string(Write, "W")
+                + add_permission_to_string(Execute, "E")
+                + add_permission_to_string(Delete, "D");
+        }
+
+        public override string ToString()
         {
             return add_permission_to_string(Read, "R")
                 + add_permission_to_string(Write, "W")

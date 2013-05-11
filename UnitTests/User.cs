@@ -51,5 +51,11 @@ namespace ReferenceMonitorTests
         {
             return (PrivilegeMask & (int)p) == (int)p;
         }
+
+
+        public string Identity
+        {
+            get { return this.Id.ToString(); }
+        }
     }
 }

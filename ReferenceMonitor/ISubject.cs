@@ -1,11 +1,7 @@
 ﻿namespace Zaretto.Security
 {
-    using UserIdType = System.Guid;
-    using GroupIdType = System.Guid;
-
     public interface ISubject
     {
-
         /**
          * Returns an array of privileges assigned to this subject
          * @access public
@@ -45,5 +41,10 @@
         /// <param name="obj"></param>
         /// <returns></returns>
         bool IsGroupEquivalent(IControlledObject obj);
+
+        /// <summary>
+        /// a way of identifying this to an external system - not a db key - just a reference
+        /// </summary>
+        string Identity { get; }
     }
 }

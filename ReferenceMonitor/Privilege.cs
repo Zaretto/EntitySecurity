@@ -14,4 +14,18 @@
         SETPRV = 1 << 10,   // Change own privilege levels,                   All
         SYSPRV = 1 << 11,   // Access objects via system protection,          All
     };
+
+    public class PrivilegeHelper
+    {
+        /// <summary>
+        /// Test if specific privileges are set.
+        /// </summary>
+        /// <param name="RequiredPrivileges">Required privs</param>
+        /// <param name="AssignedPrivileges">Assigned Privileges</param>
+        /// <returns></returns>
+        public static bool HasPrivilege(Privilege RequiredPrivileges, int AssignedPrivileges)
+        {
+            return ((int)AssignedPrivileges & (int)RequiredPrivileges) == (int)RequiredPrivileges;
+        }
+    }
 }

@@ -34,7 +34,6 @@ namespace ReferenceMonitorTests
 
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, User1, o3));
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Security, User1, o3));
-            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Update, User1, o3));
 
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, User2, o3));
 
@@ -93,7 +92,6 @@ namespace ReferenceMonitorTests
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Delete, User1, o1));
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Security, User1, o1));
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Create, User1, o1));
-            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Update, User1, o1));
 
             User1.AddPrivilege(Privilege.READALL);
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o1));
@@ -101,7 +99,6 @@ namespace ReferenceMonitorTests
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Delete, User1, o1));
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Security, User1, o1));
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Create, User1, o1));
-            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Update, User1, o1));
 
             User1.RemovePrivilege(Privilege.READALL);
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o1));
@@ -109,7 +106,6 @@ namespace ReferenceMonitorTests
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Delete, User1, o1));
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Security, User1, o1));
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Create, User1, o1));
-            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Update, User1, o1));
 
             User1.AddPrivilege(Privilege.BYPASS);
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o1));
@@ -117,7 +113,6 @@ namespace ReferenceMonitorTests
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Delete, User1, o1));
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Security, User1, o1));
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Create, User1, o1));
-            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Update, User1, o1));
 
             /*
              * remove a different permission and check that access is still permitted
@@ -128,7 +123,6 @@ namespace ReferenceMonitorTests
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Delete, User1, o1));
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Security, User1, o1));
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Create, User1, o1));
-            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Update, User1, o1));
 
             User1.RemovePrivilege(Privilege.BYPASS);
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o1));
@@ -136,7 +130,6 @@ namespace ReferenceMonitorTests
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Delete, User1, o1));
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Security, User1, o1));
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Create, User1, o1));
-            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Update, User1, o1));
         }
     }
 }
