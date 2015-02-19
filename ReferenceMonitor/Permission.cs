@@ -1,5 +1,7 @@
-﻿namespace Zaretto.Security
+﻿using System;
+namespace Zaretto.Security
 {
+    [Serializable]
     public class Permission
     {
         public const byte Deny = 0x0;

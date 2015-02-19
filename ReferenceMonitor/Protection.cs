@@ -1,5 +1,7 @@
-﻿namespace Zaretto.Security
+﻿using System;
+namespace Zaretto.Security
 {
+    [Serializable]
     public class Protection
     {
         public const int Standard = 0x3F00; //S:RW O:RWED G: W:
