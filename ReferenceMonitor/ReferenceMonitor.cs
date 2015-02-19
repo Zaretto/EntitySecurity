@@ -45,6 +45,8 @@
  *
  *---------------------------------------------------------------------------*/
 
+using System;
+
 namespace Zaretto.Security
 {
     public class ReferenceMonitor
@@ -55,6 +57,9 @@ namespace Zaretto.Security
             // if the object is null then it appears safe to grant access.
             if (obj == null || subject == null)
                 return true;
+
+            if (obj.UserId == Guid.Empty)
+                return true; // we cannot protect something that isn't owned. can also be due to lazy loading by EF
 
             var protection = obj.Protection;
 

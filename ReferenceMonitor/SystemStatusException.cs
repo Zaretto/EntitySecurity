@@ -20,6 +20,11 @@ namespace Zaretto.System
             ACCVIO = 0x10,
             NOUSER,
             FAIL,
+            DBERROR,
+            NOPARAM,
+            NOVALUE,
+            INVFMT,
+            NOTFOUND,
         }
 
         public static string GetClassName(object obj)

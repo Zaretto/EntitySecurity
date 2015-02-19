@@ -24,5 +24,12 @@ namespace Zaretto.Security
             BitConverter.GetBytes(FastHash.ComputeHash(p)).CopyTo(bytes, 0);
             return new Guid(bytes);
         }
+
+        public static Guid GetGuidFromInt(int id)
+        {
+            byte[] bytes = new byte[16]; // relying on this being initialized to zero
+            BitConverter.GetBytes(id).CopyTo(bytes, 0);
+            return new Guid(bytes);
+        }
     }
 }
