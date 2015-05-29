@@ -1,20 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using Zaretto.Security;
-
+using System.Linq;
 namespace ReferenceMonitorTests
 {
     internal class TestItem : IControlledObject
     {
-        public TestItem(User User, TestGroup Group, Protection Protection)
+        public TestItem(User User, TestGroup readGroup, TestGroup writeGroup, Protection Protection)
         {
             this.owner = User;
-            this.group = Group;
+            _groups.Add(readGroup);
+            _groups.Add(writeGroup);
             this.protection = Protection;
         }
 
         public User owner { get; set; }
-
-        public TestGroup group { get; set; }
 
         public Protection protection { get; set; }
 
@@ -35,21 +35,6 @@ namespace ReferenceMonitorTests
             }
         }
 
-        public Guid GroupId
-        {
-            get
-            {
-                return group.Id;
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-
-
-
         public string SimpleId
         {
             get {
@@ -63,6 +48,13 @@ namespace ReferenceMonitorTests
             {
                 return owner.Id.ToString();
             }
+        }
+        public List<TestGroup> readGroups = new List<TestGroup>();
+        public List<IControlledObjectGroup> _groups = new List<IControlledObjectGroup>();
+
+        public List<IControlledObjectGroup> Groups
+        {
+           get{return _groups;}
         }
     }
 }

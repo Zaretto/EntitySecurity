@@ -1,12 +1,13 @@
 ﻿using System;
+using Zaretto.Security;
 
 namespace ReferenceMonitorTests
 {
-    internal class TestGroup
+    internal class TestUserGroup : ISecurityGroup
     {
         public Guid Id { get; set; }
 
-        public TestGroup(Guid p)
+        public TestUserGroup(Guid p)
         {
             this.Id = p;
         }

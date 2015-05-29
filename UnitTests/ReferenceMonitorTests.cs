@@ -9,23 +9,27 @@ namespace ReferenceMonitorTests
     {
         private Guid Id1 = Guid.NewGuid();
         private Guid Id2 = Guid.NewGuid();
-        private Guid GroupId1 = Guid.NewGuid();
-        private Guid GroupId2 = Guid.NewGuid();
+        private Guid readGroupId1 = Guid.NewGuid();
+        private Guid readGroupId2 = Guid.NewGuid();
+        private Guid writeGroupId1 = Guid.NewGuid();
+        private Guid writeGroupId2 = Guid.NewGuid();
 
         [TestMethod]
         public void TestReferenceMonitor()
         {
             //var u1 = new TestUser(1);
-            var g1 = new TestGroup(GroupId1);
-            var g2 = new TestGroup(GroupId2);
-            var User1 = new User(Id1, Id1);
-            var User2 = new User(Id2, Id2);
+            var g1read = new TestGroup(readGroupId1, new Permission(Permission.RE));
+            var g2read = new TestGroup(readGroupId2, new Permission(Permission.RE));
+            var g1write = new TestGroup(writeGroupId1, new Permission(Permission.W));
+            var g2write = new TestGroup(writeGroupId2, new Permission(Permission.W));
+            var User1 = new User(Id1, g1read, g1write);
+            var User2 = new User(Id2, g2read, g2write);
 
             var protection = new Protection(Protection.Standard);
-            var o1 = new TestItem(User1, g1, protection);
+            var o1 = new TestItem(User1, g1read, g1write, protection);
 
-            var o2 = new TestItem(User2, g2, new Protection(0xff00));
-            var o3 = new TestItem(User2, g2, new Protection(0xffd1));
+            var o2 = new TestItem(User2, g2read, g1write, new Protection(0xff00));
+            var o3 = new TestItem(User2, g2read, g1write, new Protection(0xffd1));
 
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o1));
 
@@ -46,21 +50,41 @@ namespace ReferenceMonitorTests
             User1.AddPrivilege(Privilege.BYPASS);
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o2));
         }
+        [TestMethod]
+        public void TestReadWriteGroups()
+        {
+            //var u1 = new TestUser(1);
+            var g1read = new TestGroup(readGroupId1, new Permission(Permission.RE));
+            var g1write = new TestGroup(writeGroupId1, new Permission(Permission.W));
+            var readWriteUser = new User(Id1, g1read, g1write);
+            var readOnlyUser = new User(new Guid(), g1read, null);
 
+            var o1 = new TestItem(readWriteUser, g1read, g1write, new Protection(0xfff0)); //S:REWD O:REWD G:REWD W:
+
+
+            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, readWriteUser, o1));
+            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, readOnlyUser, o1));
+            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, readOnlyUser, o1));
+
+            readOnlyUser.AddPrivilege(Privilege.BYPASS);
+            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, readWriteUser, o1));
+        }
         [TestMethod]
         public void OwnerProtection()
         {
             //var u1 = new TestUser(1);
-            var g1 = new TestGroup(GroupId1);
-            var g2 = new TestGroup(GroupId2);
-            var User1 = new User(Id1, Id1);
-            var User2 = new User(Id2, Id2);
+            var g1read = new TestGroup(readGroupId1, new Permission(Permission.RE));
+            var g2read = new TestGroup(readGroupId2, new Permission(Permission.RE));
+            var g1write = new TestGroup(writeGroupId1, new Permission(Permission.W));
+            var g2write = new TestGroup(writeGroupId2, new Permission(Permission.W));
+            var User1 = new User(Id1, g1read, g1write);
+            var User2 = new User(Id2, g2read, g2write);
 
             var protection = new Protection(Protection.Standard);
-            var o1 = new TestItem(User1, g1, protection);
+            var o1 = new TestItem(User1, g1read, g1write, protection);
 
-            var o2 = new TestItem(User2, g2, new Protection(Permission.R, Permission.RWED, Permission.Deny, Permission.Deny));
-            var o3 = new TestItem(User2, g2, new Protection(Permission.RWED, Permission.RWED, Permission.R, Permission.R));
+            var o2 = new TestItem(User2, g2read, g2write, new Protection(Permission.R, Permission.RWED, Permission.Deny, Permission.Deny));
+            var o3 = new TestItem(User2, g2read, g2write, new Protection(Permission.RWED, Permission.RWED, Permission.R, Permission.R));
 
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o1));
 
@@ -80,12 +104,13 @@ namespace ReferenceMonitorTests
         [TestMethod]
         public void Privileges()
         {
-            var g1 = new TestGroup(GroupId1);
-            var User1 = new User(Id1, Id1);
+            var g1read = new TestGroup(readGroupId1, new Permission(Permission.RE));
+            var g1write = new TestGroup(writeGroupId1, new Permission(Permission.W));
+            var User1 = new User(Id1, g1read, g1write);
 
             // create an object to which the user will have no access
             var protection = new Protection(0);
-            var o1 = new TestItem(User1, g1, protection);
+            var o1 = new TestItem(User1, g1read, g1write, protection);
 
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, User1, o1));
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, User1, o1));

@@ -33,14 +33,14 @@
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        bool IsOwnerEquivalent(IControlledObject obj);
+        bool IsOwnerEquivalent(Operation operation, IControlledObject obj);
 
         /// <summary>
         /// returns true if the owner of the controlled object is equivalent to this
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        bool IsGroupEquivalent(IControlledObject obj);
+        bool IsGroupEquivalent(Operation operation, IControlledObject obj);
 
         /// <summary>
         /// a way of identifying this to an external system - not a db key - just a reference

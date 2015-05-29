@@ -1,5 +1,8 @@
 ﻿namespace Zaretto.Security
 {
+    /// <summary>
+    /// Operations that can be performed to an Object by a Subject
+    /// </summary>
     public enum Operation
     {
         Read = 1 << 1,

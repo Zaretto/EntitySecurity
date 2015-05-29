@@ -1,5 +1,8 @@
 ﻿namespace Zaretto.Security
 {
+    /// <summary>
+    /// Users can be assigned certain privileges that permit actions that would be protected.
+    /// </summary>
     public enum Privilege
     {
         BYPASS = 1 << 1,    // Bypass object protection,                     All

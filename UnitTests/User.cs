@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Zaretto.Security;
 
 namespace ReferenceMonitorTests
@@ -9,21 +11,23 @@ namespace ReferenceMonitorTests
 
         //private List<Privilege> Privileges { get; set; }
 
-        private TestGroup group;
+        private List<ISecurityGroup> Groups = new List<ISecurityGroup>();
         private TestUser user;
 
         public Guid Id { get { return user.Id; } }
 
-        public User(Guid p1, Guid p2)
+        public User(Guid p1, ISecurityGroup readGroup, ISecurityGroup writeGroup = null)
         {
             user = new TestUser(p1);
-            group = new TestGroup(p2);
+            Groups.Add(readGroup);
+            if (writeGroup != null) 
+                Groups.Add(writeGroup);
             PrivilegeMask = 0;
 
             //            Privileges = new List<Privilege>();
         }
 
-        public bool IsOwnerEquivalent(IControlledObject obj)
+        public bool IsOwnerEquivalent(Operation operation, IControlledObject obj)
         {
             return obj.UserId == user.Id;
         }
@@ -42,9 +46,10 @@ namespace ReferenceMonitorTests
             //            Privileges.Remove(p);
         }
 
-        public bool IsGroupEquivalent(IControlledObject obj)
+        public bool IsGroupEquivalent(Operation operation, IControlledObject obj)
         {
-            return obj.GroupId == group.Id;
+            return obj.Groups.Where(og => Groups.Any(xx => xx.Id == og.Id))
+                .Any(og => ReferenceMonitor.IsOperationPermitted(operation, og.ApplicableTo));
         }
 
         public bool HasPrivilege(Privilege p)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Zaretto.Security
 {
@@ -14,8 +15,11 @@ namespace Zaretto.Security
 
         Guid UserId { get; }
 
-        Guid GroupId { get; }
-
+        /// <summary>
+        /// List of groups that may access this object via group protection.
+        /// </summary>
+        List<IControlledObjectGroup> Groups { get; }
+        
         /// <summary>
         /// for reference / display - the simplest identifiable form of the ID
         /// </summary>

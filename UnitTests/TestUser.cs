@@ -1,8 +1,9 @@
 ﻿using System;
+using Zaretto.Security;
 
 namespace ReferenceMonitorTests
 {
-    internal class TestUser
+    internal class TestUser : ISecurityGroup
     {
         public TestUser(Guid id)
         {

@@ -1,6 +1,9 @@
 ﻿using System;
 namespace Zaretto.Security
 {
+    /// <summary>
+    /// The permissions that a required to access an object.
+    /// </summary>
     [Serializable]
     public class Permission
     {
@@ -57,7 +60,14 @@ namespace Zaretto.Security
             Execute = from.Execute;
             Delete = from.Delete;
         }
-
+        /// <summary>
+        /// Combined is a bitmask; consisting of 4 four bit entries;
+        /// 0: Read
+        /// 1: Write
+        /// 2: Execute
+        /// 3: Delete
+        /// </summary>
+        /// <param name="combined"></param>
         public Permission(int combined)
         {
             Read = (combined & B_Read) == B_Read;

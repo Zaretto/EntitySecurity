@@ -1,6 +1,10 @@
 ﻿using System;
 namespace Zaretto.Security
 {
+    /// <summary>
+    /// Defines the protection applied to an IControlledObject. This consists of a set of 4 permissions for
+    /// System, Owner, Group, World and is usually persisted in an integer.
+    /// </summary>
     [Serializable]
     public class Protection
     {
@@ -55,6 +59,36 @@ namespace Zaretto.Security
 
         public Permission world { get; set; }
 
+        /// Combined 16bit permission;
+        /// 0xFFFF
+        ///   |||+World - bits LSB to NSB: RWED
+        ///   ||+ Group
+        ///   |+Owner RWED
+        ///   | System RWED
+        ///   
+        /// Bit:
+        /// 0: World Read
+        /// 1: World Write
+        /// 2: World Execute
+        /// 3: World Delete
+
+        /// 4: Group Read
+        /// 5: Group Write
+        /// 6: Group Execute
+        /// 7: Group Delete
+        /// 
+        /// 8: Owner Read
+        /// 9: Owner Write
+        /// 10: Owner Execute
+        /// 11: Owner Delete
+        /// 
+        /// 12: System Read
+        /// 13: System Write
+        /// 14: System Execute
+        /// 16: System Delete
+        /// 
+        /// 0xSO
+        /// 
         public int Combined
         {
             get
@@ -70,75 +104,6 @@ namespace Zaretto.Security
             }
         }
 
-        //private Permission _system = new Permission(0);
-        //private Permission _owner = new Permission(0);
-        //private Permission _group = new Permission(0);
-        //private Permission _world = new Permission(0);
-
-        //public Permission system
-        //{
-        //    get
-        //    {
-        //        _system.Combined = (byte)((Combined & 0xF000) >> 12);
-        //        return _system;
-        //        //return new Permission((Combined & 0xF000) >> 12);
-        //    }
-        //    set
-        //    {
-        //        Combined = (Combined & 0xfff) | value.Combined << 12;
-        //    }
-        //}
-        //public Permission owner
-        //{
-        //    get
-        //    {
-        //        _owner.Combined = (byte)((Combined & 0xF00) >> 8);
-        //        return _owner;
-        //    }
-        //    set
-        //    {
-        //        Combined = (Combined & 0xf0ff) | value.Combined << 8;
-        //    }
-        //}
-        //public Permission group
-        //{
-        //    get
-        //    {
-        //        _group.Combined = (byte)((Combined & 0xF0) >> 4);
-        //        return _group;
-        //    }
-        //    set
-        //    {
-        //        Combined = (Combined & 0xff0f) | value.Combined << 4;
-        //    }
-        //}
-        //public Permission world
-        //{
-        //    get
-        //    {
-        //        _world.Combined = (byte)((Combined & 0xF) >> 0);
-        //        return _world;
-        //    }
-        //    set
-        //    {
-        //        Combined = (Combined & 0xfff0) | value.Combined << 0;
-        //    }
-        //}
-
-        //private int Combined;
-        //{
-        //    get
-        //    {
-        //        return (system.Combined << 12) | (owner.Combined << 8) | (group.Combined << 4) | (world.Combined << 0);
-        //    }
-        //    set
-        //    {
-        //        world = new Permission(value & 0xF);
-        //        group = new Permission((value & 0xF0) >> 4);
-        //        owner = new Permission((value & 0xF00) >> 8);
-        //        system = new Permission((value & 0xF000) >> 12);
-        //    }
-        //}
         public override string ToString()
         {
             return "S:" + system

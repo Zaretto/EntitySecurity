@@ -65,12 +65,13 @@ namespace Zaretto.Security
 
             //
             // least costly - so try this first.
-            if (ReferenceMonitor.permitted(operation, protection.world))
+            if (ReferenceMonitor.IsOperationPermitted(operation, protection.world))
                 return true;
 
             //
             // access via owner
-            if (subject.IsOwnerEquivalent(obj) && ReferenceMonitor.permitted(operation, protection.owner))
+            if (ReferenceMonitor.IsOperationPermitted(operation, protection.owner) 
+                && subject.IsOwnerEquivalent(operation, obj))
             {
                 return true;
             }
@@ -79,7 +80,8 @@ namespace Zaretto.Security
             // if system user - or have System Privilege then can access through the system protection.
             // accessViaSystem allows services to access via system protection and is part of the privilege elevation
             // and impersonation.
-            if ((accessViaSystem || subject.HasPrivilege(Privilege.SYSPRV)) && ReferenceMonitor.permitted(operation, protection.system))
+            if (ReferenceMonitor.IsOperationPermitted(operation, protection.system)
+                && (accessViaSystem || subject.HasPrivilege(Privilege.SYSPRV)))
             {
                 return true;
             }
@@ -87,14 +89,14 @@ namespace Zaretto.Security
             //
             // only the owner or a subject with SECURITY priv can change permissions and protections.
             if (operation == Operation.Security)
-                return subject.IsOwnerEquivalent(obj) || subject.HasPrivilege(Privilege.SECURITY);
+                return subject.IsOwnerEquivalent(operation, obj) || subject.HasPrivilege(Privilege.SECURITY);
 
             /*
              * if the subject has group access (priv) or the group is the same
              * between the subj and obj then grant access based on the group protection.
              */
-            if ((subject.IsGroupEquivalent(obj) || subject.HasPrivilege(Privilege.GROUP))
-                && ReferenceMonitor.permitted(operation, protection.group))
+            if (ReferenceMonitor.IsOperationPermitted(operation, protection.group)
+                && (subject.IsGroupEquivalent(operation, obj) || subject.HasPrivilege(Privilege.GROUP)))
                 return true;
 
             /*
@@ -122,7 +124,7 @@ namespace Zaretto.Security
         /// <param name="operation"></param>
         /// <param name="permission"></param>
         /// <returns></returns>
-        private static bool permitted(Operation operation, Permission permission)
+        public static bool IsOperationPermitted(Operation operation, Permission permission)
         {
             switch (operation)
             {
