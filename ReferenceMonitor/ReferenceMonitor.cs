@@ -124,7 +124,7 @@ namespace Zaretto.Security
         /// <param name="operation"></param>
         /// <param name="permission"></param>
         /// <returns></returns>
-        public static bool IsOperationPermitted(Operation operation, Permission permission)
+        public static bool IsOperationPermitted(Operation operation, IPermission permission)
         {
             switch (operation)
             {

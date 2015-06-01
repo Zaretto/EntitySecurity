@@ -7,12 +7,12 @@ namespace ReferenceMonitorTests
     {
         public Guid Id { get; set; }
 
-        public TestGroup(Guid p, Permission applicableTo)
+        public TestGroup(Guid p, IPermission applicableTo)
         {
             this.Id = p;
             ApplicableTo = applicableTo;
         }
 
-        public Permission ApplicableTo {get;set;}
+        public IPermission ApplicableTo {get;set;}
     }
 }

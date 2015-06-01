@@ -1,12 +1,17 @@
 ﻿using System;
-namespace Zaretto.Security
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Zaretto.Security;
+
+namespace ReferenceMonitorTests
 {
     /// <summary>
     /// Defines the protection applied to an IControlledObject. This consists of a set of 4 permissions for
     /// System, Owner, Group, World and is usually persisted in an integer.
     /// </summary>
     [Serializable]
-    public class Protection
+    public class Protection : IProtection
     {
         public const int Standard = 0x3F00; //S:RW O:RWED G: W:
 
@@ -17,10 +22,10 @@ namespace Zaretto.Security
 
         public Protection(Permission system, Permission owner, Permission group, Permission world)
         {
-            this.system = new Permission(system);
-            this.owner = new Permission(owner);
-            this.group = new Permission(group);
-            this.world = new Permission(world);
+            this._system = new Permission(system);
+            this._owner = new Permission(owner);
+            this._group = new Permission(group);
+            this._world = new Permission(world);
         }
 
         /// <summary>
@@ -32,10 +37,10 @@ namespace Zaretto.Security
         /// <param name="world"></param>
         public Protection(byte system, byte owner, byte group, byte world)
         {
-            this.system = new Permission(system);
-            this.owner = new Permission(owner);
-            this.group = new Permission(group);
-            this.world = new Permission(world);
+            this._system = new Permission(system);
+            this._owner = new Permission(owner);
+            this._group = new Permission(group);
+            this._world = new Permission(world);
         }
 
         /// <summary>
@@ -51,13 +56,12 @@ namespace Zaretto.Security
             Combined = combined;
         }
 
-        public Permission system { get; set; }
+        Permission _system;
 
-        public Permission owner { get; set; }
+        Permission _owner;
 
-        public Permission group { get; set; }
-
-        public Permission world { get; set; }
+        Permission _group;
+        Permission _world;
 
         /// Combined 16bit permission;
         /// 0xFFFF
@@ -93,23 +97,72 @@ namespace Zaretto.Security
         {
             get
             {
-                return (system.Combined << 12) | (owner.Combined << 8) | (group.Combined << 4) | (world.Combined << 0);
+                return (_system.Combined << 12) | (_owner.Combined << 8) | (_group.Combined << 4) | (_world.Combined << 0);
             }
             set
             {
-                world = new Permission(value & 0xF);
-                group = new Permission((value & 0xF0) >> 4);
-                owner = new Permission((value & 0xF00) >> 8);
-                system = new Permission((value & 0xF000) >> 12);
+                _world = new Permission(value & 0xF);
+                _group = new Permission((value & 0xF0) >> 4);
+                _owner = new Permission((value & 0xF00) >> 8);
+                _system = new Permission((value & 0xF000) >> 12);
             }
         }
 
         public override string ToString()
         {
-            return "S:" + system
-                    + " O:" + owner
-                    + " G:" + group
-                    + " W:" + world;
+            return "S:" + _system
+                    + " O:" + _owner
+                    + " G:" + _group
+                    + " W:" + _world;
+        }
+
+
+        public IPermission system
+        {
+            get
+            {
+                return _system;
+            }
+            set
+            {
+                _system.SetFromIPermission(value);;
+            }
+        }
+
+        public IPermission owner
+        {
+            get
+            {
+                return _owner;
+            }
+            set
+            {
+                _owner.SetFromIPermission(value);;
+            }
+        }
+
+        public IPermission group
+        {
+            get
+            {
+                return _group;
+            }
+            set
+            {
+                _group.SetFromIPermission(value);
+            }
+        }
+
+        public IPermission world
+        {
+            get
+            {
+                return _world;
+            }
+            set
+            {
+                _world.SetFromIPermission(value);;
+            }
         }
     }
 }

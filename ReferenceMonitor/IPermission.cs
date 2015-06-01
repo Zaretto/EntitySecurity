@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Zaretto.Security
 {
+    /// <summary>
+    /// The permissions that a required to access an object.
+    /// </summary>
     public interface IPermission
     {
-        bool Read{get;}
-        bool Write{get;}
-        bool Execute{get;}
-        bool Delete { get; }
 
-        byte GetCombined();
+        bool Read {get;set;}
+        bool Write{get;set;}
+
+        bool Execute{get;set;}
+
+        bool Delete{get;set;}
     }
 }

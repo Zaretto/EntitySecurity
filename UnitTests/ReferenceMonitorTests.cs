@@ -18,14 +18,14 @@ namespace ReferenceMonitorTests
         public void TestReferenceMonitor()
         {
             //var u1 = new TestUser(1);
-            var g1read = new TestGroup(readGroupId1, new Permission(Permission.RE));
-            var g2read = new TestGroup(readGroupId2, new Permission(Permission.RE));
-            var g1write = new TestGroup(writeGroupId1, new Permission(Permission.W));
-            var g2write = new TestGroup(writeGroupId2, new Permission(Permission.W));
+            var g1read = new TestGroup(readGroupId1, new Permission(Permissions.RE));
+            var g2read = new TestGroup(readGroupId2, new Permission(Permissions.RE));
+            var g1write = new TestGroup(writeGroupId1, new Permission(Permissions.W));
+            var g2write = new TestGroup(writeGroupId2, new Permission(Permissions.W));
             var User1 = new User(Id1, g1read, g1write);
             var User2 = new User(Id2, g2read, g2write);
 
-            var protection = new Protection(Protection.Standard);
+            var protection = new Protection(Permissions.Standard);
             var o1 = new TestItem(User1, g1read, g1write, protection);
 
             var o2 = new TestItem(User2, g2read, g1write, new Protection(0xff00));
@@ -54,8 +54,8 @@ namespace ReferenceMonitorTests
         public void TestReadWriteGroups()
         {
             //var u1 = new TestUser(1);
-            var g1read = new TestGroup(readGroupId1, new Permission(Permission.RE));
-            var g1write = new TestGroup(writeGroupId1, new Permission(Permission.W));
+            var g1read = new TestGroup(readGroupId1, new Permission(Permissions.RE));
+            var g1write = new TestGroup(writeGroupId1, new Permission(Permissions.W));
             var readWriteUser = new User(Id1, g1read, g1write);
             var readOnlyUser = new User(new Guid(), g1read, null);
 
@@ -73,14 +73,14 @@ namespace ReferenceMonitorTests
         public void OwnerProtection()
         {
             //var u1 = new TestUser(1);
-            var g1read = new TestGroup(readGroupId1, new Permission(Permission.RE));
-            var g2read = new TestGroup(readGroupId2, new Permission(Permission.RE));
-            var g1write = new TestGroup(writeGroupId1, new Permission(Permission.W));
-            var g2write = new TestGroup(writeGroupId2, new Permission(Permission.W));
+            var g1read = new TestGroup(readGroupId1, new Permission(Permissions.RE));
+            var g2read = new TestGroup(readGroupId2, new Permission(Permissions.RE));
+            var g1write = new TestGroup(writeGroupId1, new Permission(Permissions.W));
+            var g2write = new TestGroup(writeGroupId2, new Permission(Permissions.W));
             var User1 = new User(Id1, g1read, g1write);
             var User2 = new User(Id2, g2read, g2write);
 
-            var protection = new Protection(Protection.Standard);
+            var protection = new Protection(Permissions.Standard);
             var o1 = new TestItem(User1, g1read, g1write, protection);
 
             var o2 = new TestItem(User2, g2read, g2write, new Protection(Permission.R, Permission.RWED, Permission.Deny, Permission.Deny));
@@ -104,8 +104,8 @@ namespace ReferenceMonitorTests
         [TestMethod]
         public void Privileges()
         {
-            var g1read = new TestGroup(readGroupId1, new Permission(Permission.RE));
-            var g1write = new TestGroup(writeGroupId1, new Permission(Permission.W));
+            var g1read = new TestGroup(readGroupId1, new Permission(Permissions.RE));
+            var g1write = new TestGroup(writeGroupId1, new Permission(Permissions.W));
             var User1 = new User(Id1, g1read, g1write);
 
             // create an object to which the user will have no access

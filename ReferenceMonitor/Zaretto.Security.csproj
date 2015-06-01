@@ -40,10 +40,11 @@
     <Compile Include="ISecurityGroup.cs" />
     <Compile Include="ISubject.cs" />
     <Compile Include="Operation.cs" />
-    <Compile Include="Permission.cs" />
+    <Compile Include="IPermission.cs" />
+    <Compile Include="Permissions.cs" />
     <Compile Include="Privilege.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Protection.cs" />
+    <Compile Include="IProtection.cs" />
     <Compile Include="ReferenceMonitor.cs" />
     <Compile Include="SystemStatusException.cs" />
     <Compile Include="SystemStatusNoPriv.cs" />

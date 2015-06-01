@@ -14,6 +14,6 @@ namespace Zaretto.Security
         /// <summary>
         /// the permissions to which this group is applicable to. This allows us to have different groups based on the REWD model.
         /// </summary>
-        Permission ApplicableTo { get;set;}
+        IPermission ApplicableTo { get;set;}
     }
 }
