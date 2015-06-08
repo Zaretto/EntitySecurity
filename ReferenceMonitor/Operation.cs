@@ -61,5 +61,26 @@
         /// Submit an object for a secondary action or process. possible subset of execute.
         /// </summary>
         Submit = 1 << 11,
+
+        /// <summary>
+        /// All operations to be included; or the operation isn't specified.
+        /// </summary>
+        UnspecfiedOrAll = 0xffffff
     };
+
+    public static class OperationExtensions
+    {
+        public static bool IsSet(this Operation target, Operation query)
+        {
+            return ((int)target & (int)query) == (int)query;
+        }
+        public static bool Contains(this Operation target, Operation query)
+        {
+            return ((int)target & (int)query) == (int)query;
+        }
+        public static Operation Add(this Operation target, Operation addition)
+        {
+            return (Operation)((int)target | (int)addition);
+        }
+    }
 }

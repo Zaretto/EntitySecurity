@@ -119,7 +119,10 @@ namespace Zaretto.Security
         }
 
         /// <summary>
-        /// Given an operation get the relevant permission - mapping from operations to permissions
+        /// Given an operation get the relevant permission - mapping from operations to permissions. This is designed to be
+        /// overriden to allow fine grained control on top of the basic permissions granted to group or owner on the object.
+        /// For system and world the object permissions are definitive, whereas for owner and group it depends on the implementation of the
+        /// IsOwnerEquivalent and IsGroupEquivalent.
         /// </summary>
         /// <param name="operation"></param>
         /// <param name="permission"></param>
@@ -128,6 +131,11 @@ namespace Zaretto.Security
         {
             switch (operation)
             {
+                    //
+                    // security operations sit outside of control of the permissions.
+                case Operation.Security:
+                    return false;
+
                 case Operation.Write:
                 case Operation.Create:
                     return permission.Write;
@@ -149,6 +157,7 @@ namespace Zaretto.Security
             }
             return false;
         }
+
 
         /// <summary>
         /// throw exception if access not permitted. do  not check null objects.

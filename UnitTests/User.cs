@@ -13,7 +13,7 @@ namespace ReferenceMonitorTests
 
         private List<ISecurityGroup> Groups = new List<ISecurityGroup>();
         private TestUser user;
-        private ReferenceMonitor ReferenceMonitor = new ReferenceMonitor();
+        private MyReferenceMonitor ReferenceMonitor = new MyReferenceMonitor();
 
         public Guid Id { get { return user.Id; } }
 
@@ -49,8 +49,13 @@ namespace ReferenceMonitorTests
 
         public bool IsGroupEquivalent(Operation operation, IControlledObject obj)
         {
-            return obj.Groups.Where(og => Groups.Any(xx => xx.Id == og.Id))
-                .Any(og => ReferenceMonitor.HasPermissionRequiredForOperation(operation, og.ApplicableTo));
+            var l1 = obj.Groups.Where(og => og.ApplicableOperation.Contains(operation) && Groups.Any(xx => xx.Id == og.Id));
+            var l2 = l1.Where(og => ReferenceMonitor.HasPermissionRequiredForOperation(operation, og.ApplicableTo))
+                .ToList();
+            return l2.Any();
+            //return obj.Groups.Where(og => Groups.Any(xx => xx.Id == og.Id))
+            //    .Where(og => og.ApplicableOperation.Contains(operation))
+            //    .Any(og => ReferenceMonitor.HasPermissionRequiredForOperation(operation, og.ApplicableTo));
         }
 
         public bool HasPrivilege(Privilege p)
