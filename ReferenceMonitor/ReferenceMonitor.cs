@@ -51,7 +51,7 @@ namespace Zaretto.Security
 {
     public class ReferenceMonitor
     {
-        public static bool IsPermitted(Operation operation, ISubject subject, IControlledObject obj, bool accessViaSystem = false)
+        public  virtual bool IsPermitted(Operation operation, ISubject subject, IControlledObject obj, bool accessViaSystem = false)
         {
             //
             // if the object is null then it appears safe to grant access.
@@ -65,12 +65,12 @@ namespace Zaretto.Security
 
             //
             // least costly - so try this first.
-            if (ReferenceMonitor.IsOperationPermitted(operation, protection.world))
+            if (HasPermissionRequiredForOperation(operation, protection.world))
                 return true;
 
             //
             // access via owner
-            if (ReferenceMonitor.IsOperationPermitted(operation, protection.owner) 
+            if (HasPermissionRequiredForOperation(operation, protection.owner) 
                 && subject.IsOwnerEquivalent(operation, obj))
             {
                 return true;
@@ -80,7 +80,7 @@ namespace Zaretto.Security
             // if system user - or have System Privilege then can access through the system protection.
             // accessViaSystem allows services to access via system protection and is part of the privilege elevation
             // and impersonation.
-            if (ReferenceMonitor.IsOperationPermitted(operation, protection.system)
+            if (HasPermissionRequiredForOperation(operation, protection.system)
                 && (accessViaSystem || subject.HasPrivilege(Privilege.SYSPRV)))
             {
                 return true;
@@ -95,7 +95,7 @@ namespace Zaretto.Security
              * if the subject has group access (priv) or the group is the same
              * between the subj and obj then grant access based on the group protection.
              */
-            if (ReferenceMonitor.IsOperationPermitted(operation, protection.group)
+            if (HasPermissionRequiredForOperation(operation, protection.group)
                 && (subject.IsGroupEquivalent(operation, obj) || subject.HasPrivilege(Privilege.GROUP)))
                 return true;
 
@@ -124,7 +124,7 @@ namespace Zaretto.Security
         /// <param name="operation"></param>
         /// <param name="permission"></param>
         /// <returns></returns>
-        public static bool IsOperationPermitted(Operation operation, IPermission permission)
+        public virtual bool HasPermissionRequiredForOperation(Operation operation, IPermission permission)
         {
             switch (operation)
             {
@@ -143,6 +143,9 @@ namespace Zaretto.Security
                     // only items that have execute and read can be listed. this allows fine
                     // grained control of items appearing in lists - i.e. to remove an item from a list do not grant execute - just read.
                     return permission.Execute && permission.Read;
+
+                default:
+                    throw new Zaretto.System.SystemStatusException(this, System.SystemStatusException.ErrorSeverity.Fatal, System.SystemStatusException.ErrorIdent.NOTFOUND, "No permission for operation " + operation.ToString() + " defined. Override ReferenceMonitor.HasPermissionRequiredForOperation to define the permission to be used for this operation");
             }
             return false;
         }
@@ -154,7 +157,7 @@ namespace Zaretto.Security
         /// <param name="currentUser"></param>
         /// <param name="obj"></param>
         /// <param name="accessViaSystem"></param>
-        public static void ThrowIfNotPermitted(Operation operation, ISubject currentUser, IControlledObject obj, bool accessViaSystem = false)
+        public virtual void ThrowIfNotPermitted(Operation operation, ISubject currentUser, IControlledObject obj, bool accessViaSystem = false)
         {
             if (!IsPermitted(operation, currentUser, obj, accessViaSystem))
             {

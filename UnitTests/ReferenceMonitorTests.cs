@@ -13,6 +13,7 @@ namespace ReferenceMonitorTests
         private Guid readGroupId2 = Guid.NewGuid();
         private Guid writeGroupId1 = Guid.NewGuid();
         private Guid writeGroupId2 = Guid.NewGuid();
+        private ReferenceMonitor ReferenceMonitor = new ReferenceMonitor();
 
         [TestMethod]
         public void TestReferenceMonitor()
