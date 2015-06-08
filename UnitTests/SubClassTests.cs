@@ -4,6 +4,11 @@ using Zaretto.Security;
 
 namespace ReferenceMonitorTests
 {
+    /// <summary>
+    /// This version of the reference monitor defines which permission field the Assign operation maps to.
+    /// The basic operations (system, world) will use this permission; however the fine grained (that call IsOwnerEquivalent or IsGroupEquivalent)
+    /// can further refine the applicability of the group / owner tests to exlcude this operation if required.
+    /// </summary>
     public class MyReferenceMonitor : ReferenceMonitor
     {
         public override bool HasPermissionRequiredForOperation(Operation operation, IPermission permission)
@@ -28,6 +33,9 @@ namespace ReferenceMonitorTests
         private Guid writeGroupId2 = Guid.NewGuid();
         private ReferenceMonitor ReferenceMonitor = new MyReferenceMonitor();
 
+        /// <summary>
+        /// checks the operation field is operating correctly.
+        /// </summary>
         [TestMethod]
         public void OperationManipulation()
         {
@@ -38,6 +46,10 @@ namespace ReferenceMonitorTests
 
             Assert.IsFalse(x.Contains(Operation.Create));
         }
+
+        /// <summary>
+        /// check that the operations can be granted on a per group basis.
+        /// </summary>
         [TestMethod]
         public void TestExtensible_Assign()
         {
@@ -58,6 +70,7 @@ namespace ReferenceMonitorTests
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, readOnlyUser, o1));
 
             Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Assign, assignUser, o1));
+            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, assignUser, o1));
             Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Assign, writeUser, o1));
 
             readOnlyUser.AddPrivilege(Privilege.BYPASS);
