@@ -63,6 +63,12 @@
         Submit = 1 << 11,
 
         /// <summary>
+        /// Impersonate or act as another user. This does not necessarily relate to the impersonate via privileges model 
+        /// that is used to control the user context - rather it is to allow an operation to another object 
+        /// </summary>
+        Impersonate = 1 << 12,
+
+        /// <summary>
         /// All operations to be included; or the operation isn't specified.
         /// </summary>
         UnspecfiedOrAll = 0xffffff
