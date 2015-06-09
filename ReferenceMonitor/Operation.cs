@@ -78,7 +78,7 @@
         {
             return ((int)target & (int)query) == (int)query;
         }
-        public static Operation Add(this Operation target, Operation addition)
+        public static Operation Append(this Operation target, Operation addition)
         {
             return (Operation)((int)target | (int)addition);
         }

@@ -39,7 +39,7 @@ namespace ReferenceMonitorTests
         [TestMethod]
         public void OperationManipulation()
         {
-            var x = Operation.Write.Add(Operation.Read).Add(Operation.Move);
+            var x = Operation.Write.Append(Operation.Read).Append(Operation.Move);
             Assert.IsTrue(x.Contains(Operation.Write));
             Assert.IsTrue(x.Contains(Operation.Read));
             Assert.IsTrue(x.Contains(Operation.Move));
@@ -54,9 +54,9 @@ namespace ReferenceMonitorTests
         public void TestExtensible_Assign()
         {
             //var u1 = new TestUser(1);
-            var g1read = new TestGroup(readGroupId1, new Permission(Permissions.RE), Operation.Read);
-            var g1write = new TestGroup(writeGroupId1, new Permission(Permissions.W), Operation.Write);
-            var g1assign = new TestGroup(new Guid(), new Permission(Permissions.W), Operation.Assign);
+            var g1read = new TestGroup(readGroupId1, Operation.Read);
+            var g1write = new TestGroup(writeGroupId1, Operation.Write);
+            var g1assign = new TestGroup(new Guid(), Operation.Assign);
             var readWriteUser = new User(Id1, g1read, g1write);
             var readOnlyUser = new User(new Guid(), g1read, null);
             var writeUser = new User(new Guid(), g1read, g1write);

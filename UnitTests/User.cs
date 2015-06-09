@@ -50,9 +50,7 @@ namespace ReferenceMonitorTests
         public bool IsGroupEquivalent(Operation operation, IControlledObject obj)
         {
             var l1 = obj.Groups.Where(og => og.ApplicableOperation.Contains(operation) && Groups.Any(xx => xx.Id == og.Id));
-            var l2 = l1.Where(og => ReferenceMonitor.HasPermissionRequiredForOperation(operation, og.ApplicableTo))
-                .ToList();
-            return l2.Any();
+            return l1.Any();
             //return obj.Groups.Where(og => Groups.Any(xx => xx.Id == og.Id))
             //    .Where(og => og.ApplicableOperation.Contains(operation))
             //    .Any(og => ReferenceMonitor.HasPermissionRequiredForOperation(operation, og.ApplicableTo));

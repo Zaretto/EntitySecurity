@@ -12,10 +12,9 @@ namespace Zaretto.Security
     public interface IControlledObjectGroup : ISecurityGroup
     {
         /// <summary>
-        /// the permissions to which this group is applicable to. This allows us to have different groups based on the REWD model.
+        /// the operations to which this group is applicable to. This allows us to have finely grained control of group
+        /// operation
         /// </summary>
-        IPermission ApplicableTo { get;set;}
-
         Operation ApplicableOperation { get; set; }
     }
 }
