@@ -28,7 +28,7 @@ namespace ReferenceMonitorTests
             //            Privileges = new List<Privilege>();
         }
 
-        public bool IsOwnerEquivalent(Operation operation, IControlledObject obj)
+        public bool IsOwnerEquivalent(IControlledObjectOperation operation, IControlledObject obj)
         {
             return obj.UserId == user.Id;
         }
@@ -47,7 +47,7 @@ namespace ReferenceMonitorTests
             //            Privileges.Remove(p);
         }
 
-        public bool IsGroupEquivalent(Operation operation, IControlledObject obj)
+        public bool IsGroupEquivalent(IControlledObjectOperation operation, IControlledObject obj)
         {
             var l1 = obj.Groups.Where(og => og.ApplicableOperation.Contains(operation) && Groups.Any(xx => xx.Id == og.Id));
             return l1.Any();

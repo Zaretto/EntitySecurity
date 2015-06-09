@@ -51,7 +51,7 @@ namespace Zaretto.Security
 {
     public class ReferenceMonitor
     {
-        public  virtual bool IsPermitted(Operation operation, ISubject subject, IControlledObject obj, bool accessViaSystem = false)
+        public  virtual bool IsPermitted(IControlledObjectOperation operation, ISubject subject, IControlledObject obj, bool accessViaSystem = false)
         {
             //
             // if the object is null then it appears safe to grant access.
@@ -88,7 +88,7 @@ namespace Zaretto.Security
 
             //
             // only the owner or a subject with SECURITY priv can change permissions and protections.
-            if (operation == Operation.Security)
+            if (operation == IControlledObjectOperation.Security)
                 return subject.IsOwnerEquivalent(operation, obj) || subject.HasPrivilege(Privilege.SECURITY);
 
             /*
@@ -109,7 +109,7 @@ namespace Zaretto.Security
             /*
              * If the subject (user) has READALL then permit any read or list
              */
-            if ((operation == Operation.Read || operation == Operation.List)
+            if ((operation == IControlledObjectOperation.Read || operation == IControlledObjectOperation.List)
                 && subject.HasPrivilege(Privilege.READALL))
             {
                 return true;
@@ -127,26 +127,26 @@ namespace Zaretto.Security
         /// <param name="operation"></param>
         /// <param name="permission"></param>
         /// <returns></returns>
-        public virtual bool HasPermissionRequiredForOperation(Operation operation, IPermission permission)
+        public virtual bool HasPermissionRequiredForOperation(IControlledObjectOperation operation, IPermission permission)
         {
             switch (operation)
             {
                     //
                     // security operations sit outside of control of the permissions.
-                case Operation.Security:
+                case IControlledObjectOperation.Security:
                     return false;
 
-                case Operation.Write:
-                case Operation.Create:
+                case IControlledObjectOperation.Write:
+                case IControlledObjectOperation.Create:
                     return permission.Write;
 
-                case Operation.Read:
+                case IControlledObjectOperation.Read:
                     return permission.Read;
 
-                case Operation.Delete:
+                case IControlledObjectOperation.Delete:
                     return permission.Delete;
 
-                case Operation.List:
+                case IControlledObjectOperation.List:
 
                     // only items that have execute and read can be listed. this allows fine
                     // grained control of items appearing in lists - i.e. to remove an item from a list do not grant execute - just read.
@@ -166,7 +166,7 @@ namespace Zaretto.Security
         /// <param name="currentUser"></param>
         /// <param name="obj"></param>
         /// <param name="accessViaSystem"></param>
-        public virtual void ThrowIfNotPermitted(Operation operation, ISubject currentUser, IControlledObject obj, bool accessViaSystem = false)
+        public virtual void ThrowIfNotPermitted(IControlledObjectOperation operation, ISubject currentUser, IControlledObject obj, bool accessViaSystem = false)
         {
             if (!IsPermitted(operation, currentUser, obj, accessViaSystem))
             {

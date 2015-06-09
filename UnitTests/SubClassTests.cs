@@ -11,11 +11,11 @@ namespace ReferenceMonitorTests
     /// </summary>
     public class MyReferenceMonitor : ReferenceMonitor
     {
-        public override bool HasPermissionRequiredForOperation(Operation operation, IPermission permission)
+        public override bool HasPermissionRequiredForOperation(IControlledObjectOperation operation, IPermission permission)
         {
             switch (operation)
             {
-                case Operation.Assign:
+                case IControlledObjectOperation.Assign:
                     return permission.Write;
                 default:
                     return base.HasPermissionRequiredForOperation(operation, permission);
@@ -39,12 +39,12 @@ namespace ReferenceMonitorTests
         [TestMethod]
         public void OperationManipulation()
         {
-            var x = Operation.Write.Append(Operation.Read).Append(Operation.Move);
-            Assert.IsTrue(x.Contains(Operation.Write));
-            Assert.IsTrue(x.Contains(Operation.Read));
-            Assert.IsTrue(x.Contains(Operation.Move));
+            var x = IControlledObjectOperation.Write.Append(IControlledObjectOperation.Read).Append(IControlledObjectOperation.Move);
+            Assert.IsTrue(x.Contains(IControlledObjectOperation.Write));
+            Assert.IsTrue(x.Contains(IControlledObjectOperation.Read));
+            Assert.IsTrue(x.Contains(IControlledObjectOperation.Move));
 
-            Assert.IsFalse(x.Contains(Operation.Create));
+            Assert.IsFalse(x.Contains(IControlledObjectOperation.Create));
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace ReferenceMonitorTests
         public void TestExtensible_Assign()
         {
             //var u1 = new TestUser(1);
-            var g1read = new TestGroup(readGroupId1, Operation.Read);
-            var g1write = new TestGroup(writeGroupId1, Operation.Write);
-            var g1assign = new TestGroup(new Guid(), Operation.Assign);
+            var g1read = new TestGroup(readGroupId1, IControlledObjectOperation.Read);
+            var g1write = new TestGroup(writeGroupId1, IControlledObjectOperation.Write);
+            var g1assign = new TestGroup(new Guid(), IControlledObjectOperation.Assign);
             var readWriteUser = new User(Id1, g1read, g1write);
             var readOnlyUser = new User(new Guid(), g1read, null);
             var writeUser = new User(new Guid(), g1read, g1write);
@@ -65,16 +65,16 @@ namespace ReferenceMonitorTests
             var o1 = new TestItem(readWriteUser, g1read, g1write, new Protection(0xfff0)); //S:REWD O:REWD G:REWD W:
             o1._groups.Add(g1assign);
 
-            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, readWriteUser, o1));
-            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Read, readOnlyUser, o1));
-            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, readOnlyUser, o1));
+            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.IControlledObjectOperation.Read, readWriteUser, o1));
+            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.IControlledObjectOperation.Read, readOnlyUser, o1));
+            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.IControlledObjectOperation.Write, readOnlyUser, o1));
 
-            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Assign, assignUser, o1));
-            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, assignUser, o1));
-            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Assign, writeUser, o1));
+            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.IControlledObjectOperation.Assign, assignUser, o1));
+            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.IControlledObjectOperation.Write, assignUser, o1));
+            Assert.IsFalse(ReferenceMonitor.IsPermitted(Zaretto.Security.IControlledObjectOperation.Assign, writeUser, o1));
 
             readOnlyUser.AddPrivilege(Privilege.BYPASS);
-            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.Operation.Write, readWriteUser, o1));
+            Assert.IsTrue(ReferenceMonitor.IsPermitted(Zaretto.Security.IControlledObjectOperation.Write, readWriteUser, o1));
         }
     }
 }

@@ -39,7 +39,7 @@
     <Compile Include="IControlledObjectGroup.cs" />
     <Compile Include="ISecurityGroup.cs" />
     <Compile Include="ISubject.cs" />
-    <Compile Include="Operation.cs" />
+    <Compile Include="IControlledObjectOperation.cs" />
     <Compile Include="IPermission.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Privilege.cs" />

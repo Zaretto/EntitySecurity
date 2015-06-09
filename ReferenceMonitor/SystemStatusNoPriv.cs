@@ -5,7 +5,7 @@ namespace Zaretto.System
 {
     public class SystemStatusNoPriv : SystemStatusException
     {
-        public SystemStatusNoPriv(IControlledObject obj, Zaretto.Security.Operation activity, ISubject user)
+        public SystemStatusNoPriv(IControlledObject obj, Zaretto.Security.IControlledObjectOperation activity, ISubject user)
             : base(obj, ErrorSeverity.Fatal, ErrorIdent.NOPRIV,
 #if DEBUGw
             String.Format("Insufficient privilege or object protection violation. \n" +

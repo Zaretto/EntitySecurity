@@ -4,7 +4,7 @@
     /// Operations that can be performed to an Object by a Subject. This can be extended by using extra bits that are unused and mapping these in
     /// an override of ReferenceMonitor.HasPermissionRequiredForOperation
     /// </summary>
-    public enum Operation
+    public enum IControlledObjectOperation
     {
         /// <summary>
         /// Read from an object
@@ -70,17 +70,17 @@
 
     public static class OperationExtensions
     {
-        public static bool IsSet(this Operation target, Operation query)
+        public static bool IsSet(this IControlledObjectOperation target, IControlledObjectOperation query)
         {
             return ((int)target & (int)query) == (int)query;
         }
-        public static bool Contains(this Operation target, Operation query)
+        public static bool Contains(this IControlledObjectOperation target, IControlledObjectOperation query)
         {
             return ((int)target & (int)query) == (int)query;
         }
-        public static Operation Append(this Operation target, Operation addition)
+        public static IControlledObjectOperation Append(this IControlledObjectOperation target, IControlledObjectOperation addition)
         {
-            return (Operation)((int)target | (int)addition);
+            return (IControlledObjectOperation)((int)target | (int)addition);
         }
     }
 }

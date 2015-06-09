@@ -7,13 +7,13 @@ namespace ReferenceMonitorTests
     {
         public Guid Id { get; set; }
 
-        public TestGroup(Guid p, Operation applicableOperation)
+        public TestGroup(Guid p, IControlledObjectOperation applicableOperation)
         {
             this.Id = p;
             ApplicableOperation = applicableOperation;
         }
 
 
-        public Operation ApplicableOperation {get;set;}
+        public IControlledObjectOperation ApplicableOperation {get;set;}
     }
 }

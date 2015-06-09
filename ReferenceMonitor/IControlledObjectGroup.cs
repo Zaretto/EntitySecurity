@@ -15,6 +15,6 @@ namespace Zaretto.Security
         /// the operations to which this group is applicable to. This allows us to have finely grained control of group
         /// operation
         /// </summary>
-        Operation ApplicableOperation { get; set; }
+        IControlledObjectOperation ApplicableOperation { get; set; }
     }
 }
