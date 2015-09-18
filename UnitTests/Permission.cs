@@ -1,11 +1,13 @@
 ﻿using System;
-namespace Zaretto.Security
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Zaretto.Security;
+
+namespace ReferenceMonitorTests
 {
-    /// <summary>
-    /// The permissions that a required to access an object.
-    /// </summary>
     [Serializable]
-    public class Permission
+    public class Permission : IPermission
     {
         public const byte Deny = 0x0;
         public const byte B_Read = 0x1;
@@ -160,6 +162,14 @@ namespace Zaretto.Security
                 + add_permission_to_string(Write, "W")
                 + add_permission_to_string(Execute, "E")
                 + add_permission_to_string(Delete, "D");
+        }
+
+        public void SetFromIPermission(IPermission value)
+        {
+            Read = value.Read;
+            Write = value.Write;
+            Execute = value.Execute;
+            Delete = value.Delete;
         }
     }
 }

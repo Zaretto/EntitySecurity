@@ -11,7 +11,7 @@ namespace Zaretto.Security
          * @return Int
          */
 
-        Protection Protection { get; }
+        IProtection Protection { get; }
 
         Guid UserId { get; }
 

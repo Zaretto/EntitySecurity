@@ -6,7 +6,7 @@ namespace ReferenceMonitorTests
 {
     internal class TestItem : IControlledObject
     {
-        public TestItem(User User, TestGroup readGroup, TestGroup writeGroup, Protection Protection)
+        public TestItem(User User, TestGroup readGroup, TestGroup writeGroup, IProtection Protection)
         {
             this.owner = User;
             _groups.Add(readGroup);
@@ -16,9 +16,9 @@ namespace ReferenceMonitorTests
 
         public User owner { get; set; }
 
-        public Protection protection { get; set; }
+        public IProtection protection { get; set; }
 
-        public Zaretto.Security.Protection Protection
+        public Zaretto.Security.IProtection Protection
         {
             get { return protection; }
         }

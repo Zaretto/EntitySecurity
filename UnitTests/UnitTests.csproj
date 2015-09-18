@@ -53,8 +53,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Permission.cs" />
     <Compile Include="PermissionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protection.cs" />
+    <Compile Include="SubClassTests.cs" />
     <Compile Include="ReferenceMonitorTests.cs" />
     <Compile Include="TestObjectGroup.cs" />
     <Compile Include="TestItem.cs" />

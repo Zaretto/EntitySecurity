@@ -51,7 +51,7 @@ namespace Zaretto.Security
 {
     public class ReferenceMonitor
     {
-        public static bool IsPermitted(Operation operation, ISubject subject, IControlledObject obj, bool accessViaSystem = false)
+        public  virtual bool IsPermitted(IControlledObjectOperation operation, ISubject subject, IControlledObject obj, bool accessViaSystem = false)
         {
             //
             // if the object is null then it appears safe to grant access.
@@ -65,12 +65,12 @@ namespace Zaretto.Security
 
             //
             // least costly - so try this first.
-            if (ReferenceMonitor.IsOperationPermitted(operation, protection.world))
+            if (HasPermissionRequiredForOperation(operation, protection.world))
                 return true;
 
             //
             // access via owner
-            if (ReferenceMonitor.IsOperationPermitted(operation, protection.owner) 
+            if (HasPermissionRequiredForOperation(operation, protection.owner) 
                 && subject.IsOwnerEquivalent(operation, obj))
             {
                 return true;
@@ -80,7 +80,7 @@ namespace Zaretto.Security
             // if system user - or have System Privilege then can access through the system protection.
             // accessViaSystem allows services to access via system protection and is part of the privilege elevation
             // and impersonation.
-            if (ReferenceMonitor.IsOperationPermitted(operation, protection.system)
+            if (HasPermissionRequiredForOperation(operation, protection.system)
                 && (accessViaSystem || subject.HasPrivilege(Privilege.SYSPRV)))
             {
                 return true;
@@ -88,14 +88,14 @@ namespace Zaretto.Security
 
             //
             // only the owner or a subject with SECURITY priv can change permissions and protections.
-            if (operation == Operation.Security)
+            if (operation == IControlledObjectOperation.Security)
                 return subject.IsOwnerEquivalent(operation, obj) || subject.HasPrivilege(Privilege.SECURITY);
 
             /*
              * if the subject has group access (priv) or the group is the same
              * between the subj and obj then grant access based on the group protection.
              */
-            if (ReferenceMonitor.IsOperationPermitted(operation, protection.group)
+            if (HasPermissionRequiredForOperation(operation, protection.group)
                 && (subject.IsGroupEquivalent(operation, obj) || subject.HasPrivilege(Privilege.GROUP)))
                 return true;
 
@@ -109,7 +109,7 @@ namespace Zaretto.Security
             /*
              * If the subject (user) has READALL then permit any read or list
              */
-            if ((operation == Operation.Read || operation == Operation.List)
+            if ((operation == IControlledObjectOperation.Read || operation == IControlledObjectOperation.List)
                 && subject.HasPrivilege(Privilege.READALL))
             {
                 return true;
@@ -119,33 +119,45 @@ namespace Zaretto.Security
         }
 
         /// <summary>
-        /// Given an operation get the relevant permission - mapping from operations to permissions
+        /// Given an operation get the relevant permission - mapping from operations to permissions. This is designed to be
+        /// overriden to allow fine grained control on top of the basic permissions granted to group or owner on the object.
+        /// For system and world the object permissions are definitive, whereas for owner and group it depends on the implementation of the
+        /// IsOwnerEquivalent and IsGroupEquivalent.
         /// </summary>
         /// <param name="operation"></param>
         /// <param name="permission"></param>
         /// <returns></returns>
-        public static bool IsOperationPermitted(Operation operation, Permission permission)
+        public virtual bool HasPermissionRequiredForOperation(IControlledObjectOperation operation, IPermission permission)
         {
             switch (operation)
             {
-                case Operation.Write:
-                case Operation.Create:
+                    //
+                    // security operations sit outside of control of the permissions.
+                case IControlledObjectOperation.Security:
+                    return false;
+
+                case IControlledObjectOperation.Write:
+                case IControlledObjectOperation.Create:
                     return permission.Write;
 
-                case Operation.Read:
+                case IControlledObjectOperation.Read:
                     return permission.Read;
 
-                case Operation.Delete:
+                case IControlledObjectOperation.Delete:
                     return permission.Delete;
 
-                case Operation.List:
+                case IControlledObjectOperation.List:
 
                     // only items that have execute and read can be listed. this allows fine
                     // grained control of items appearing in lists - i.e. to remove an item from a list do not grant execute - just read.
                     return permission.Execute && permission.Read;
+
+                default:
+                    throw new Zaretto.System.SystemStatusException(this, System.SystemStatusException.ErrorSeverity.Fatal, System.SystemStatusException.ErrorIdent.NOTFOUND, "No permission for operation " + operation.ToString() + " defined. Override ReferenceMonitor.HasPermissionRequiredForOperation to define the permission to be used for this operation");
             }
             return false;
         }
+
 
         /// <summary>
         /// throw exception if access not permitted. do  not check null objects.
@@ -154,7 +166,7 @@ namespace Zaretto.Security
         /// <param name="currentUser"></param>
         /// <param name="obj"></param>
         /// <param name="accessViaSystem"></param>
-        public static void ThrowIfNotPermitted(Operation operation, ISubject currentUser, IControlledObject obj, bool accessViaSystem = false)
+        public virtual void ThrowIfNotPermitted(IControlledObjectOperation operation, ISubject currentUser, IControlledObject obj, bool accessViaSystem = false)
         {
             if (!IsPermitted(operation, currentUser, obj, accessViaSystem))
             {

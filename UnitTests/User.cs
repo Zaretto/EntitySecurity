@@ -13,6 +13,7 @@ namespace ReferenceMonitorTests
 
         private List<ISecurityGroup> Groups = new List<ISecurityGroup>();
         private TestUser user;
+        private MyReferenceMonitor ReferenceMonitor = new MyReferenceMonitor();
 
         public Guid Id { get { return user.Id; } }
 
@@ -27,7 +28,7 @@ namespace ReferenceMonitorTests
             //            Privileges = new List<Privilege>();
         }
 
-        public bool IsOwnerEquivalent(Operation operation, IControlledObject obj)
+        public bool IsOwnerEquivalent(IControlledObjectOperation operation, IControlledObject obj)
         {
             return obj.UserId == user.Id;
         }
@@ -46,10 +47,13 @@ namespace ReferenceMonitorTests
             //            Privileges.Remove(p);
         }
 
-        public bool IsGroupEquivalent(Operation operation, IControlledObject obj)
+        public bool IsGroupEquivalent(IControlledObjectOperation operation, IControlledObject obj)
         {
-            return obj.Groups.Where(og => Groups.Any(xx => xx.Id == og.Id))
-                .Any(og => ReferenceMonitor.IsOperationPermitted(operation, og.ApplicableTo));
+            var l1 = obj.Groups.Where(og => og.ApplicableOperation.Contains(operation) && Groups.Any(xx => xx.Id == og.Id));
+            return l1.Any();
+            //return obj.Groups.Where(og => Groups.Any(xx => xx.Id == og.Id))
+            //    .Where(og => og.ApplicableOperation.Contains(operation))
+            //    .Any(og => ReferenceMonitor.HasPermissionRequiredForOperation(operation, og.ApplicableTo));
         }
 
         public bool HasPrivilege(Privilege p)
