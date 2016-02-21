@@ -31,5 +31,10 @@ namespace Zaretto.Security
             BitConverter.GetBytes(id).CopyTo(bytes, 0);
             return new Guid(bytes);
         }
+
+        public static int GetIntFromGuid(Guid guid_id)
+        {
+            return BitConverter.ToInt32(guid_id.ToByteArray(), 0);
+        }
     }
 }
