@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Richard Harrison</authors>
+    <owners>Zaretto</owners>
+    <iconUrl>https://entitysecurity.codeplex.com/</iconUrl>
+    <licenseUrl>https://entitysecurity.codeplex.com/license</licenseUrl>
+    <projectUrl>https://entitysecurity.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Provides Security Implementation related features, currently a ReferenceMonitor and required interfaces</description>
+        <releaseNotes>
+            V2.1.0 Portable library. 
+                   Int to Guid conversion bidirectional
+
+            V2.0.1 Revised System Status Exception to retain the originating message text
+
+            V2.0.0 Introduces finer grained permissions for groups; such that a group definition contains the permissible operations for that group.
+                   Added operation to the user and group equivalency interfaces.
+
+        </releaseNotes>
+        <copyright>Copyright © 2016 Richard Hazrrison</copyright>
+    <tags>Entity Security ReferenceMonitor</tags>
+  </metadata>
+</package>
