@@ -9,6 +9,6 @@ namespace Zaretto.Security
     /// </summary>
     public interface ISecurityGroup
     {
-        Guid Id { get; set; }
+        Guid Id { get;  }
     }
 }
