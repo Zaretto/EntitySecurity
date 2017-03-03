@@ -7,13 +7,13 @@ namespace Zaretto.Security
     /// </summary>
     public interface IProtection
     {
-         IPermission system { get; set; }
+         IPermission system { get;  }
 
-        IPermission owner { get; set; }
+        IPermission owner { get;  }
 
-        IPermission group { get; set; }
+        IPermission group { get; }
 
-        IPermission world { get; set; }
+        IPermission world { get;  }
 
     }
 }
