@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using Zaretto.Security;
 
-namespace ReferenceMonitorTests
+namespace TestObjects
 {
-    [Serializable]
     public class Permission : IPermission
     {
         public const byte Deny = 0x0;

@@ -8,12 +8,15 @@
 
 # Build results
 
+.nuget/
+packages/
 [Dd]ebug/
 [Rr]elease/
 x64/
 build/
 [Bb]in/
 [Oo]bj/
+.vs/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

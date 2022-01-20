@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using Zaretto.Security;
 
-namespace ReferenceMonitorTests
+namespace TestObjects
 {
     /// <summary>
     /// Defines the protection applied to an IControlledObject. This consists of a set of 4 permissions for
     /// System, Owner, Group, World and is usually persisted in an integer.
     /// </summary>
-    [Serializable]
     public class Protection : IProtection
     {
         public const int Standard = 0x3F00; //S:RW O:RWED G: W:

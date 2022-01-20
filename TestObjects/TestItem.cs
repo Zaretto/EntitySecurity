@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Zaretto.Security;
 using System.Linq;
-namespace ReferenceMonitorTests
+namespace TestObjects
 {
-    internal class TestItem : IControlledObject
+    public class TestItem : IControlledObject
     {
         public TestItem(User User, TestGroup readGroup, TestGroup writeGroup, IProtection Protection)
         {

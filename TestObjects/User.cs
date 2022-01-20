@@ -3,9 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using Zaretto.Security;
 
-namespace ReferenceMonitorTests
+namespace TestObjects
 {
-    internal class User : ISubject
+    public class User : ISubject
     {
         private int PrivilegeMask = 0;
 

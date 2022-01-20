@@ -1,9 +1,9 @@
 ﻿using System;
 using Zaretto.Security;
 
-namespace ReferenceMonitorTests
+namespace TestObjects
 {
-    internal class TestGroup : IControlledObjectGroup
+    public class TestGroup : IControlledObjectGroup
     {
         public Guid Id { get; set; }
 
