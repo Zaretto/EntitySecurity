@@ -155,7 +155,6 @@ namespace Zaretto.Security
                 default:
                     throw new Zaretto.System.SystemStatusException(this, System.SystemStatusException.ErrorSeverity.Fatal, System.SystemStatusException.ErrorIdent.NOTFOUND, "No permission for operation " + operation.ToString() + " defined. Override ReferenceMonitor.HasPermissionRequiredForOperation to define the permission to be used for this operation");
             }
-            return false;
         }
 
 

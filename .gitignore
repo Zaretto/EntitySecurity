@@ -8,6 +8,8 @@
 
 # Build results
 
+.nuget/
+packages/
 [Dd]ebug/
 [Rr]elease/
 x64/

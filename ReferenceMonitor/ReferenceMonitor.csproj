@@ -1,67 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5D094DB7-2981-45D4-A065-326D7793DF54}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReferenceMonitor</RootNamespace>
-    <AssemblyName>ReferenceMonitor</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworks>net5.0;netstandard2.0;netstandard1.0;net4.6;net4.8</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>EntitySecurity</PackageId>
+    <Version>2.3.3</Version>
+    <Authors>Richard Harrison</Authors>
+    <Company>Zaretto</Company>
+    <Product>Entity Security</Product>
+    <Description>Provides Security Implementation related features, currently a ReferenceMonitor and required interfaces</Description>
+    <PackageProjectUrl>https://github.com/Zaretto/EntitySecurity</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Zaretto/EntitySecurity.git</RepositoryUrl>
+    <PackageTags>Entity Security ReferenceMonitor DataObjects.Net</PackageTags>
+    <PackageReleaseNotes>V2.3.3 Add support for .net standard 1.0
+V2.3.2 Rework packaging
+V2.3.2 Rework packaging
+      V2.3.2 Rework packagingV2.3.2 Rework packaging
+      V2.3.0 .Net standard support
+      V2.1.0 Portable library - Int to Guid conversion bidirectional
+      V2.0.1 Revised System Status Exception to retain the originating message text
+      V2.3.2 Rework packagingV2.3.2 Rework packaging
+V2.3.0 .Net standard support
+V2.1.0 Portable library - Int to Guid conversion bidirectional
+V2.0.1 Revised System Status Exception to retain the originating message text
+V2.0.0 Introduces finer grained permissions for groups; such that a group definition contains the permissible operations for that group.  Added operation to the user and group equivalency interfaces.</PackageReleaseNotes>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <Copyright>Copyright (C) 2022 Richard Harrison</Copyright>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="FastHash.cs" />
-    <Compile Include="GuidConverter.cs" />
-    <Compile Include="IControlledObject.cs" />
-    <Compile Include="IPermission.cs" />
-    <Compile Include="ISubject.cs" />
-    <Compile Include="Operation.cs" />
-    <Compile Include="Permission.cs" />
-    <Compile Include="Privilege.cs" />
-    <Compile Include="Protection.cs" />
-    <Compile Include="ReferenceMonitor.cs" />
-    <Compile Include="SystemStatusException.cs" />
-    <Compile Include="SystemStatusNoPriv.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
