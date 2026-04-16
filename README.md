@@ -8,23 +8,30 @@ The library is designed to be embedded into applications that need fine-grained,
 
 ## Contents
 
-- [Concepts](#concepts)
-- [Solution layout](#solution-layout)
-- [Core API](#core-api)
-  - [`ReferenceMonitor`](#referencemonitor)
-  - [`IControlledObject`](#icontrolledobject)
-  - [`ISubject`](#isubject)
-  - [`IProtection` and `IPermission`](#iprotection-and-ipermission)
-  - [`IControlledObjectOperation`](#icontrolledobjectoperation)
-  - [`IControlledObjectGroup` / `ISecurityGroup`](#icontrolledobjectgroup--isecuritygroup)
-  - [`Privilege`](#privilege)
-- [Access decision algorithm](#access-decision-algorithm)
-- [Protection encoding](#protection-encoding)
-- [Usage](#usage)
-- [Extending the model](#extending-the-model)
-- [Building and testing](#building-and-testing)
-- [References](#references)
-- [License](#license)
+- [EntitySecurity](#entitysecurity)
+  - [Contents](#contents)
+  - [Concepts](#concepts)
+  - [Solution layout](#solution-layout)
+  - [Core API](#core-api)
+    - [`ReferenceMonitor`](#referencemonitor)
+    - [`IControlledObject`](#icontrolledobject)
+    - [`ISubject`](#isubject)
+    - [`IProtection` and `IPermission`](#iprotection-and-ipermission)
+    - [`IControlledObjectOperation`](#icontrolledobjectoperation)
+    - [`IControlledObjectGroup` / `ISecurityGroup`](#icontrolledobjectgroup--isecuritygroup)
+    - [`Privilege`](#privilege)
+  - [Access decision algorithm](#access-decision-algorithm)
+  - [Protection encoding](#protection-encoding)
+  - [Usage](#usage)
+    - [Minimum integration](#minimum-integration)
+    - [Worked example](#worked-example)
+  - [Extending the model](#extending-the-model)
+  - [Building and testing](#building-and-testing)
+    - [Prerequisites](#prerequisites)
+    - [Build](#build)
+    - [Tests](#tests)
+  - [References](#references)
+  - [License](#license)
 
 ---
 
@@ -419,7 +426,7 @@ The suite covers the world/owner/group/system decision paths, the privilege over
 ## References
 
 - James P. Anderson, *Computer Security Technology Planning Study*, ESD-TR-73-51 Vol. II, October 1972 — <http://csrc.nist.gov/publications/history/ande72.pdf>
-- *OpenVMS Guide to System Security*, AA-Q2HLE-TE — <http://h71000.www7.hp.com/doc/73final/6346/6346pro.html>
+- *OpenVMS Guide to System Security*, AA-Q2HLE-TE — ([http://h71000.www7.hp.com/doc/73final/6346/6346pro.html archived](https://web.archive.org/web/20090830203935/http://h71000.www7.hp.com/doc/73final/6346/6346pro.html))
 - *Record interface segmentation — Object Mapping* — <http://chateau-logic.com/content/record-interface-segmentation-object-mapping>
 
 ---
